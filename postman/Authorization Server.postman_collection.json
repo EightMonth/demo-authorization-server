@@ -1,0 +1,241 @@
+{
+	"info": {
+		"_postman_id": "d8a721e5-7cdd-4651-a2d5-c342f8575da2",
+		"name": "Authorization Server",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1885767",
+		"_collection_link": "https://cloudy-capsule-429232.postman.co/workspace/wuhandata~261791de-5b28-4e3d-b0ed-0592f5092a3a/collection/1885767-d8a721e5-7cdd-4651-a2d5-c342f8575da2?action=share&source=collection_link&creator=1885767"
+	},
+	"item": [
+		{
+			"name": "客户端模式",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic YWRtaW4tY2xpZW50OnNlY3JldA==",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "user.read",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8080/oauth2/token",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oauth2",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "访问资源",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJraWQiOiJiZTMxYTkxNi01YzViLTQ0NWEtOTIzMC0yZDVhYTUzYjE3MWEiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbi1jbGllbnQiLCJhdWQiOiJhZG1pbi1jbGllbnQiLCJuYmYiOjE3MDM4MzIzOTksInNjb3BlIjpbInVzZXIucmVhZCJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE3MDM4MzI2OTksImlhdCI6MTcwMzgzMjM5OX0.DEogy1R18ntOiKMM9BffkTeOzQ3lN6qhvrSUQmflgUGkJzh09DpTWcB9IjExnPwqF9MFX6pjjfV_DGI2YrBQmWZz17tfseghb-lgsVVGCDNvh2aMrVIrwjyrpIPEgWYBnGSQhGFV3R8rRlYDcVQgOYEhN61uRgAN1a7g5hocLQGSJkUEaggQEImyT99RPP2hMRjimC6HUWdnUWWjCDkO98mbigJ30OQXi6Bw131ry7_-opgBwm7njk3A7my96KgVLeHcZ-TxjbbHcD_AC21-t4JJMM3X5q3pSwzWXzRnS0cjusK8-f-MLKoh2Bwx9MnOH_My35JI6saaNFN8mAPFbQ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/index",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"index"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OpenID Connect模式",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:9000/.well-known/openid-configuration",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "9000",
+					"path": [
+						".well-known",
+						"openid-configuration"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "获取授权码（复制到浏览器）",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/oauth2/authorize?response_type=code&client_id=oidc-client&scope=profile openid&redirect_uri=http://www.baidu.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"oauth2",
+						"authorize"
+					],
+					"query": [
+						{
+							"key": "response_type",
+							"value": "code"
+						},
+						{
+							"key": "client_id",
+							"value": "oidc-client"
+						},
+						{
+							"key": "scope",
+							"value": "profile openid"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://www.baidu.com"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "授权码请求",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic b2lkYy1jbGllbnQ6c2VjcmV0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "authorization_code",
+							"type": "text"
+						},
+						{
+							"key": "code",
+							"value": "Zj-pcFlmgANDA1lHwnUUKvGUFC2Bgs8VRUUBPU2Gz1QsfKN7Px0RN1cqawmDn15qWviEeU2_ORg6B93q1AAxK4t4X9SG4bF0RciP40r7Uwn-pZI59YIZx5zQHhn3pPqx",
+							"type": "text"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://www.baidu.com",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:9000/oauth2/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"oauth2",
+						"token"
+					],
+					"query": [
+						{
+							"key": "grant_type",
+							"value": "authorization_code",
+							"disabled": true
+						},
+						{
+							"key": "code",
+							"value": "y80K1ZsXLkk0ROflqn8ZpaV_KC-cKkk0bZUxib7LF3QC_uAzlHCzcwlEyEQB_xPt0K6MO7JKAQLYR4E6jJpDqTixJlYS36KDxZUZ42eW_CuK2q8wpbuGLZCwa8EeNEU2",
+							"disabled": true
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://www.baidu.com",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "刷新token模式",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic b2lkYy1jbGllbnQ6c2VjcmV0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "refresh_token",
+							"type": "text"
+						},
+						{
+							"key": "refresh_token",
+							"value": "T6KhubCKPc_tc_qE_48GykMT-8WoctBO11Ol-JCGrIvjzjyXgre7HwrsJF3aTaAwPbLXr4B-2QggAMhzUDXNqm7p9X7bQwnj2ydCDUeTRFTzimqrKEWDdUYlPhzqa9Qy",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:9000/oauth2/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"oauth2",
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

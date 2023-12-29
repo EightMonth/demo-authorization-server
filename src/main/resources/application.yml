@@ -1,0 +1,12 @@
+server:
+  port: 9000
+
+logging:
+  level:
+    org.springframework.security: trace
+
+spring:
+  application:
+    name: spring-oauth-server
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
