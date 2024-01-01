@@ -10,3 +10,14 @@ spring:
     name: spring-oauth-server
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/auth_server
+    username: admin
+    password: admin
+
+
+#资源服务器的配置
+  security:
+    oauth2:
+      resource-server:
+        jwt:
+          issuer-uri: http://localhost:${server.port}
