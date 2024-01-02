@@ -7,6 +7,7 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import org.apache.catalina.util.StandardSessionIdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,12 +24,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
+import org.springframework.security.oauth2.core.oidc.endpoint.OidcParameterNames;
+import org.springframework.security.oauth2.jwt.JwsHeader;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
-import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationConsentService;
-import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
-import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
-import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
+import org.springframework.security.oauth2.server.authorization.*;
 import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
@@ -44,6 +46,8 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.time.Instant;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -219,6 +223,24 @@ public class SecurityConfig {
         OAuth2RefreshTokenGenerator refreshTokenGenerator = new OAuth2RefreshTokenGenerator();
         return new DelegatingOAuth2TokenGenerator(
                 jwtGenerator, accessTokenGenerator, refreshTokenGenerator);
+    }
+
+    @Bean
+    public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer() {
+        return context -> {
+            JwsHeader.Builder headers = context.getJwsHeader();
+            JwtClaimsSet.Builder claims = context.getClaims();
+            if (context.getTokenType().equals(OAuth2TokenType.ACCESS_TOKEN)) {
+                // 自定义 access_token headers/claims
+
+            } else if (context.getTokenType().getValue().equals(OidcParameterNames.ID_TOKEN)) {
+                // 自定义 id_token headers/claims for
+                claims.claim(IdTokenClaimNames.AUTH_TIME, Date.from(Instant.now()));
+                StandardSessionIdGenerator standardSessionIdGenerator = new StandardSessionIdGenerator();
+                claims.claim("sid", standardSessionIdGenerator.generateSessionId());
+
+            }
+        };
     }
 
     public static void main(String[] args) {
